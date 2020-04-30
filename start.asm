@@ -5,12 +5,15 @@ dd MB_MAGIC
 dd MB_FLAGS
 dd -(MB_MAGIC + MB_FLAGS)
 
+section .text
 global _start
+extern _main
 _start:
-  mov ax, 'O' + 0xf00
-  mov [0xb8000], ax
-  mov ax, 'K' + 0xf00
-  mov [0xb8002], ax
-
+	mov esp, stack_top
+	call _main
   hlt
   jmp $-1
+
+section .bss
+	resb 8192
+stack_top:
